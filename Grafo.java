@@ -91,6 +91,7 @@ public class Grafo<T> {
                 }
             }
         }
+        return atual;
     }
 
 
