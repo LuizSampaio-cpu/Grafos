@@ -95,6 +95,13 @@ public class Grafo<T> {
 
 
     private ArrayList<Aresta> obterDestinos(Vertice<T> vertice){
-        
-    }
+        ArrayList<Aresta> destinos =  new ArrayList<Aresta>();
+        Aresta atual;
+        for(int i = 0; i < this.arestas.size(); i++){
+            atual = this.arestas.get(i);
+            if(atual.getOrigem().equals(vertice))
+                destinos.add(atual);
+        }
+        return destinos;
+    }   
 }
