@@ -70,22 +70,31 @@ public class Grafo<T> {
   
 
     public Vertice<T> BuscaEmLargura(){
-        ArrayList<Vertice> marcados = new ArrayList<Vertice>();
-        ArrayList<Vertice> fila = new ArrayList<Vertice>();
+        // cria uma fila de vértices marcados
+        ArrayList<Vertice<T>> marcados = new ArrayList<Vertice<T>>();
+
+        // cria uma fila de vértices a serem visitados
+        ArrayList<Vertice<T>> fila = new ArrayList<Vertice<T>>();
 
         Vertice<T> atual = this.vertices.get(0);
+        // adiciona o nó atual à fila de nós ainda não visitados
         fila.add(atual);
         
         while(fila.size() > 0){
+            // pega o primeiro vértice da fila e o remove, depois o adiciona na lista de marcados
             atual = fila.get(0);
             fila.remove(0);
             marcados.add(atual);
+            // retorna o valor daquele vértice
             System.out.println(atual.getValor());
-            ArrayList<Aresta> destinos = this.obterDestinos(atual);
+            //obtém os possíveis destinos que se podem chegar por aquele vértice
+            ArrayList<Aresta<T>> destinos = this.obterDestinos(atual);
             Vertice<T> proximo;
 
             for(int i = 0; i < destinos.size(); i++){
+                // o proximo vértice a ser visitado será um dos destinos do atual
                 proximo = destinos.get(i).getDestino();
+                // se ele não tiver sido visitado ainda e não estiver na fila, adiciona-o à fila para acessá-lo
                 if(!marcados.contains(proximo) && !fila.contains(proximo)){
                     fila.add(proximo);
                 }
@@ -95,9 +104,10 @@ public class Grafo<T> {
     }
 
 
-    private ArrayList<Aresta> obterDestinos(Vertice<T> vertice){
-        ArrayList<Aresta> destinos =  new ArrayList<Aresta>();
-        Aresta atual;
+    private ArrayList<Aresta<T>> obterDestinos(Vertice<T> vertice){
+        // cria a lista de destinos do vértice
+        ArrayList<Aresta<T>> destinos =  new ArrayList<Aresta<T>>();
+        Aresta<T> atual;
         for(int i = 0; i < this.arestas.size(); i++){
             atual = this.arestas.get(i);
             if(atual.getOrigem().equals(vertice))
