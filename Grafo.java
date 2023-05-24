@@ -28,12 +28,14 @@ public class Grafo<T> {
 
     private Vertice<T> obterVertice(T valor){
         Vertice<T> v;
+
         for(int i = 0; i < this.vertices.size(); i++){
             v = this.vertices.get(i);
             if(v.getValor().equals(valor)){
                 return v;
             }
         }
+        
         // chegou até aqui, significa que não achou o vértice
         return null;
     }
