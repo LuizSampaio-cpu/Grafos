@@ -2,12 +2,15 @@ import java.io.BufferedReader;
 import java.io.Console;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args){
         Grafo<Cidade> testeGrafo = new Grafo<Cidade>();
 
-        String path = "C:\\Users\\luizh\\OneDrive\\Documentos\\TPA (java)\\Grafos\\entrada.txt";
+        String path = "/workspace/Grafos/entrada.txt";
+
+        Scanner s = new Scanner(System.in);
 
         int quantidade = 0;
 
@@ -19,27 +22,16 @@ public class Main {
             // lê a primeira cidade
             line = br.readLine();
             for(int i = 0; i < quantidade; i++){
+                // lê as próximas
                 String data[] = line.split(",");
                 Cidade cidade = new Cidade(Integer.parseInt(data[0]), data[1]);
-                testeGrafo.adicionarVertice(cidade);
-                line = br.readLine();
+
+
             }
         }
         catch(IOException e){
             System.out.println("Erro: "+ e.getMessage());
         }
-
-
-        // Menu
-        System.out.println("******MENU*****");
-        
-        System.out.println("SELECIONE O QUE DESEJA FAZER A SEGUIR");
-        
-        System.out.println("1.EXIBIR AS CIDADES VIZINHAS");
-        
-        System.out.println("2.OBTER OS CAMINHOS A PARTIR DE UM PONTO");
-        
-        System.out.println("SAIR");
     }
     
 }
