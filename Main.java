@@ -1,4 +1,5 @@
 import java.io.BufferedReader;
+import java.io.Console;
 import java.io.FileReader;
 import java.io.IOException;
 
@@ -20,13 +21,25 @@ public class Main {
             for(int i = 0; i < quantidade; i++){
                 String data[] = line.split(",");
                 Cidade cidade = new Cidade(Integer.parseInt(data[0]), data[1]);
-
-
+                testeGrafo.adicionarVertice(cidade);
+                line = br.readLine();
             }
         }
         catch(IOException e){
             System.out.println("Erro: "+ e.getMessage());
         }
+
+
+        // Menu
+        System.out.println("******MENU*****");
+        
+        System.out.println("SELECIONE O QUE DESEJA FAZER A SEGUIR");
+        
+        System.out.println("1.EXIBIR AS CIDADES VIZINHAS");
+        
+        System.out.println("2.OBTER OS CAMINHOS A PARTIR DE UM PONTO");
+        
+        System.out.println("SAIR");
     }
     
 }
