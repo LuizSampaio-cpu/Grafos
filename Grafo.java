@@ -1,8 +1,8 @@
 import java.util.ArrayList;
 
 public class Grafo<T> {
-    private ArrayList<Aresta<T>> arestas;
-    private ArrayList<Vertice<T>> vertices;
+    private ArrayList<Aresta<T>> arestas = new ArrayList<Aresta<T>>();
+    private ArrayList<Vertice<T>> vertices = new ArrayList<Vertice<T>>();
 
 
     public ArrayList<Aresta<T>> getArestas() {
@@ -68,6 +68,8 @@ public class Grafo<T> {
 
         // adiciona a aresta à lista de grafos
         this.arestas.add(novaAresta);
+
+        verticeOrigem.AddDestino(new Aresta<T>(verticeOrigem, verticeDestino, peso));
     }
   
 
