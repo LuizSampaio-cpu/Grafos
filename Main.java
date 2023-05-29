@@ -8,7 +8,7 @@ public class Main {
     public static void main(String[] args){
         Grafo<Cidade> mapa = new Grafo<Cidade>();
 
-        String path = "C:\\Users\\luizh\\OneDrive\\Documentos\\TPA (java)\\Grafos\\entrada.txt";
+        String path = "entrada.txt";
 
         Scanner s = new Scanner(System.in);
 
