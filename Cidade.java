@@ -7,6 +7,9 @@ public class Cidade {
         this.nome = nome;
     }
 
+    public Cidade() {
+    }
+
     public int getCodigo() {
         return codigo;
     }

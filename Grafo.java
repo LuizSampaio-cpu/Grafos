@@ -1,3 +1,8 @@
+/*
+ author: @LuizSampaio-cpu
+ Luiz Sampaio Horta- 20202bsi0390
+ */
+
 import java.util.ArrayList;
 
 public class Grafo<T> {
@@ -23,6 +28,10 @@ public class Grafo<T> {
         Vertice<T> novo = new Vertice<T>(valor);
         this.vertices.add(novo);
         return novo;
+    }
+
+    public Vertice<T> obtemVertice(T valor){
+        return obterVertice(valor);
     }
 
 
@@ -73,14 +82,13 @@ public class Grafo<T> {
     }
   
 
-    public Vertice<T> BuscaEmLargura(){
+    public void BuscaEmLargura(T original){
         // cria uma fila de vértices marcados
         ArrayList<Vertice<T>> marcados = new ArrayList<Vertice<T>>();
-
         // cria uma fila de vértices a serem visitados
         ArrayList<Vertice<T>> fila = new ArrayList<Vertice<T>>();
 
-        Vertice<T> atual = this.vertices.get(0);
+        Vertice<T> atual = obtemVertice(original);
         // adiciona o nó atual à fila de nós ainda não visitados
         fila.add(atual);
         
@@ -92,7 +100,7 @@ public class Grafo<T> {
             // retorna o valor daquele vértice
             System.out.println(atual.getValor());
             //obtém os possíveis destinos que se podem chegar por aquele vértice
-            ArrayList<Aresta<T>> destinos = this.obterDestinos(atual);
+            ArrayList<Aresta<T>> destinos = atual.getDestinos();
             Vertice<T> proximo;
 
             for(int i = 0; i < destinos.size(); i++){
@@ -104,7 +112,6 @@ public class Grafo<T> {
                 }
             }
         }
-        return atual;
     }
 
 

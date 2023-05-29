@@ -3,7 +3,7 @@ import java.util.ArrayList;
 public class Vertice<T> {
     private T valor;
     
-    private ArrayList<Aresta<T>> destinos;
+    private ArrayList<Aresta<T>> destinos = new ArrayList<Aresta<T>>();
     
     public ArrayList<Aresta<T>> getDestinos() {
         return destinos;
@@ -29,7 +29,7 @@ public class Vertice<T> {
         AdicionaDestino(destino);
     }
 
-    private ArrayList<Aresta<T>> AdicionaDestino( Aresta<T> destino){
+    private ArrayList<Aresta<T>> AdicionaDestino(Aresta<T> destino){
         this.destinos.add(destino);
         return destinos;
     }
