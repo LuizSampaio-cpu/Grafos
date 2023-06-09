@@ -115,6 +115,8 @@ public class Main {
             }
             else if(resposta == 3){
                 mapa.ArvoreMinima();
+                System.out.println("O QUE FAZER A SEGUIR?");
+                resposta = s.nextInt();
             }
         }
         System.out.println("FIM");
