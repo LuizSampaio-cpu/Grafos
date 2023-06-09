@@ -60,12 +60,13 @@ public class Main {
         System.out.println("O QUE DESEJA FAZER?\n");
         System.out.println("1.OBTER CIDADES VIZINHAS\n");
         System.out.println("2.OBTER OS CAMINHOS A PARTIR DE UM PONTO\n");
-        System.out.println("3.SAIR\n");
+        System.out.println("3.CALCULAR ÁRVORE GERADORA MÍNIMA\n");
+        System.out.println("4.SAIR\n");
         
         int resposta = s.nextInt();
         s.nextLine();
 
-        while(resposta != 3){
+        while(resposta != 4){
             if(resposta == 1){
                 System.out.println("Insira o código da cidade: ");
                 resposta = s.nextInt();
@@ -111,6 +112,9 @@ public class Main {
                 }
                 System.out.println("O QUE FAZER A SEGUIR?");
                 resposta = s.nextInt();
+            }
+            else if(resposta == 3){
+                mapa.ArvoreMinima();
             }
         }
         System.out.println("FIM");

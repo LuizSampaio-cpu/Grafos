@@ -34,6 +34,9 @@ public class Vertice<T> {
         return destinos;
     }
 
-    
+    public String toString(){
+        return "Código: "+ this.valor;
+
+    }
     
 }

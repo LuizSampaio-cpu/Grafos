@@ -5,6 +5,7 @@
 
 import java.util.ArrayList;
 
+
 public class Grafo<T> {
     private ArrayList<Aresta<T>> arestas = new ArrayList<Aresta<T>>();
     private ArrayList<Vertice<T>> vertices = new ArrayList<Vertice<T>>();
@@ -126,4 +127,62 @@ public class Grafo<T> {
         }
         return destinos;
     }   
-}
+
+    public Grafo<T> ArvoreMinima(){
+        // utilização do algoritmo de Prim para fazer a árvore geradora minima
+
+        Grafo<T> arvore = new Grafo<T>(); // grafo que vai ser retornado no final
+        ArrayList<Vertice<T>> marcados = new ArrayList<Vertice<T>>(); // lista com os vértices já vistos
+        ArrayList<Vertice<T>> fila = new ArrayList<Vertice<T>>(); //lista com os vértices ainda não vistos
+        float pesoTotal = 0;//soma dos pesos das arestas
+
+        Vertice<T> atual = this.vertices.get(0);// pega o primeiro vértice do grafo e adiciona na fila
+
+        fila.add(atual);
+
+        arvore.adicionarVertice(atual.getValor()); // adiciona o vértice no grafo final
+
+        Aresta<T> menor; // aresta de menor peso dentre as possíveis
+
+
+        while(!fila.isEmpty()){// enquanto a fila de vértices não estiver vazia ele procura vértices para adicionar
+
+            atual = fila.get(0);
+            
+            marcados.add(atual);// adiciona o vértice que ele está na lista de vistos
+
+            fila.remove(atual); // remove o vertice atual da fila
+
+            ArrayList<Aresta<T>> arestasVer = atual.getDestinos();// pega os possíveis destinos dele
+
+            if(arestasVer.size() > 0){
+                menor = arestasVer.get(0);// pega a primeira aresta como o menor valor
+                for (int i = 0; i < arestasVer.size(); i++){
+
+                    //se o nó de destino não tiver sido visto ainda e o peso dele for menor que o atual, ele vira o menor
+                    if(!marcados.contains(arestasVer.get(i).getDestino()) && menor.getPeso() > arestasVer.get(i).getPeso()){
+                        menor = arestasVer.get(i);
+                    }
+                }
+                // se o nó de destino não tiver sido visto ainda, ele vira o próximo a ser analisado
+
+                if(!marcados.contains(menor.getDestino())){
+                    fila.add(menor.getDestino());// próximo nó adicionado na fila
+
+                    // adiciona o vértice que já foi visto e a aresta menor na arvore, além de atualizar o peso total
+                
+                    arvore.adicionarVertice(menor.getDestino().getValor());
+
+                    arvore.adicionaAresta(atual.getValor(), menor.getDestino().getValor(), menor.getPeso());
+
+                    pesoTotal += menor.getPeso();
+                }
+            }
+
+        }
+        System.out.println("Peso final: "+ pesoTotal);
+
+        return arvore;
+    }
+
+}   

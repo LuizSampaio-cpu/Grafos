@@ -26,6 +26,7 @@ public class Cidade {
         this.nome = nome;
     }
 
+    @Override
     public String toString(){
         return "Codigo: "+ this.codigo + "\nNome: "+ this.nome;
     }

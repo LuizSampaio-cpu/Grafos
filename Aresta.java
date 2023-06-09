@@ -8,6 +8,10 @@ public class Aresta<T> {
         this.destino = destino;
         this.peso = peso;
     }
+
+    public Aresta(float maxValue) {
+    }
+    
     public Vertice<T> getOrigem() {
         return origem;
     }
