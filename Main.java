@@ -41,6 +41,7 @@ public class Main {
                     mapa.AddAresta(origem, destino, Float.parseFloat(data[j]));
                    } 
                 }
+                //System.out.println(line);
 
                 line = br.readLine();
 

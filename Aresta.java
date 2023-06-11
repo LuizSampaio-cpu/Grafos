@@ -11,7 +11,7 @@ public class Aresta<T> {
 
     public Aresta(float maxValue) {
     }
-    
+
     public Vertice<T> getOrigem() {
         return origem;
     }
@@ -30,6 +30,11 @@ public class Aresta<T> {
     public void setPeso(float peso) {
         this.peso = peso;
     }
+
+    public int compareTo(Aresta<T> aresta){
+        return Double.compare(this.peso, aresta.getPeso());
+    }
+
 
     
 }
