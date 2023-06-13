@@ -4,8 +4,10 @@
  */
 
 import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.Queue;
+import java.util.Comparator;
+import java.util.HashSet;
+import java.util.PriorityQueue;
+import java.util.Set;
 
 
 public class Grafo<T> {
@@ -130,86 +132,69 @@ public class Grafo<T> {
         return destinos;
     }   
 
-    public Grafo<T> ArvoreMinima(){
-        // utilização do algoritmo de Prim para fazer a árvore
+ 
+    public Grafo<T> ArvoreMinima() {
+        Grafo<T> arvore = new Grafo<>(); // Cria a árvore que será retornada no final
+        Set<Vertice<T>> marcados = new HashSet<>(); // Cria o conjunto de vértices visitados
 
-        Grafo<T> arvore = new Grafo<T>();// cria a árvore que vai ser retornada no final
+        PriorityQueue<Aresta<T>> fila = new PriorityQueue<>(Comparator.comparingDouble(Aresta::getPeso)); // Cria a fila de prioridade para as arestas
 
-        ArrayList<Vertice<T>> marcados = new ArrayList<>(); //cria a lista de vértices visitados
+        Vertice<T> atual = this.getVertices().get(0); // O vértice atual começa como o primeiro do grafo
 
-        Queue<Vertice<T>> fila = new LinkedList<>(); //cria a lista de arestas já visitadas
-       
+        marcados.add(atual); // Adiciona o vértice atual aos marcados
 
-        Vertice<T> atual = this.getVertices().get(0); // o vértice atual vai começar como o primeiro do grafo
+        arvore.adicionarVertice(atual.getValor()); // Adiciona o vértice atual na árvore
 
-        fila.add(atual); //adiciona o vértice atual na fila
+        for (Aresta<T> aresta : atual.getDestinos()) { // Adiciona todas as arestas adjacentes do vértice atual à fila
+            fila.add(aresta);
+        }
 
-        arvore.adicionarVertice(atual.getValor()); // adicona o vértice atual no grafo final
+        while (!fila.isEmpty()) {
+            Aresta<T> aresta = fila.poll(); // Remove a aresta de menor peso da fila
 
-        Aresta<T> menor; // declaração da aresta com menor peso dentre as possíveis
+            Vertice<T> destino = aresta.getDestino();
 
-        while(!fila.isEmpty()){
+            if (!marcados.contains(destino)) { // Se o destino ainda não foi marcado, adiciona-o na árvore e marca-o
+                marcados.add(destino);
 
-            atual = fila.poll(); // enquanto a fila nõ estiver vazia, remove o primeiro vértice dela
+                arvore.adicionarVertice(destino.getValor()); // Adiciona o vértice de destino na árvore
+                arvore.adicionaAresta(atual.getValor(), destino.getValor(), aresta.getPeso()); // Adiciona a aresta na árvore
 
-            marcados.add(atual); // adiciona o removido na lista de marcados
-
-            ArrayList<Aresta<T>> arestas = atual.getDestinos(); // adiciona as arestas possíveis à uma lista 
-
-            if(arestas.size() > 0){
-
-                menor = arestas.get(0); // a menor aresta recebe a primeira da lista
-
-                for(int i = 1; i < arestas.size(); i++){ // itera sobre os itens da lista
-                    
-                    if(!marcados.contains(arestas.get(i).getDestino()) && menor.compareTo(arestas.get(i)) > 0){
-
-                        // se o destino da aresta nao estiver na lista de marcados e o peso for menor que o atual, ela vira a menor
-                        menor = arestas.get(i);
+                for (Aresta<T> novaAresta : destino.getDestinos()) { // Adiciona as arestas do vértice de destino na fila
+                    if (!marcados.contains(novaAresta.getDestino())) {
+                        fila.add(novaAresta);
                     }
                 }
 
-                if(!marcados.contains(menor.getDestino())){ // se o destino nao estiver na lista de marcados, adiciona na lista de marcados
-                    fila.add(menor.getDestino());
-
-                    arvore.adicionarVertice(menor.getDestino().getValor()); //adicona o vértice de destino na árvore
-
-                    arvore.adicionaAresta(atual.getValor(), menor.getDestino().getValor(), menor.getPeso()); //adicona a areta de menor peso
-                    arvore.adicionaAresta(menor.getDestino().getValor(), atual.getValor(), menor.getPeso());
-
-                    System.out.println(atual.getValor() + "->" + menor.getDestino().getValor() + "\nPeso = "+ menor.getPeso() + "\n\n");
-                }
+                atual = destino; // Atualiza o vértice atual para o destino da aresta
             }
         }
-        System.out.println("Peso final: " + arvore.PesoFinal());
-        
+
+        float pesoFinal = arvore.PesoFinal();
+        System.out.println("Peso final: " + pesoFinal);
+
         return arvore;
     }
 
-    private float PesoFinal(){ // método auxiliar de calcular a soma de peso das arestas
+    private float PesoFinal() {
         float pesoTotal = 0;
 
-        ArrayList<Aresta<T>> listaAresta = new ArrayList<>(); //inicializa uma lista que vai receber as arestas do grafo
+        Set<Aresta<T>> arestasVisitadas = new HashSet<>(); // Usando um conjunto para evitar duplicações
 
-        for(Vertice<T> vertice : this.vertices){ //itera enquanto houver vértices não vistos no grafo
+        for (Vertice<T> vertice : this.vertices) {
+            ArrayList<Aresta<T>> arestas = vertice.getDestinos();
 
-            ArrayList<Aresta<T>> arestas = vertice.getDestinos();  //adiciona os destinos na lista de arestas a visitar
-
-            for(Aresta<T> aresta : arestas){ //itera enquanto houver arestas a visitar na lista de arestas
-
-                if(!listaAresta.contains(aresta)){
-
-                    // se a aresta já não estiver na lista, a adiciona
-                    listaAresta.add(aresta);
+            for (Aresta<T> aresta : arestas) {
+                Vertice<T> destino = aresta.getDestino();
+                if (this.vertices.contains(destino) && !arestasVisitadas.contains(aresta)) {
+                    pesoTotal += aresta.getPeso();
+                    arestasVisitadas.add(aresta);
                 }
             }
         }
 
-        for(Aresta<T> aresta : listaAresta){ //itera enquanto houver arestas na lista criada no método
-
-            pesoTotal += aresta.getPeso(); // adiciona o peso delas
-        }
-        return pesoTotal / 2;
+        return pesoTotal;
     }
+
 
 }   
