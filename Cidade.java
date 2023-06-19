@@ -7,7 +7,8 @@ public class Cidade {
         this.nome = nome;
     }
 
-    public Cidade() {
+    public Cidade(Integer codigo) {
+        this.codigo = codigo;
     }
 
     public int getCodigo() {

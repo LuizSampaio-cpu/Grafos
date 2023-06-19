@@ -1,5 +1,4 @@
 import java.io.BufferedReader;
-//import java.io.Console;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.Scanner;
@@ -62,18 +61,20 @@ public class Main {
         System.out.println("1.OBTER CIDADES VIZINHAS\n");
         System.out.println("2.OBTER OS CAMINHOS A PARTIR DE UM PONTO\n");
         System.out.println("3.CALCULAR ÁRVORE GERADORA MÍNIMA\n");
-        System.out.println("4.SAIR\n");
+        System.out.println("4.CALCULAR O CAMINHO MÍNIMO ENTRE DOIS PONTOS\n");
+        System.out.println("5.CALCULAR O CAMINHO ENTRE DOIS PONTOS A PARTIR DA ÁRVORE GERADORA MÍNIMA\n");
+        System.out.println("6.SAIR\n");
         
         int resposta = s.nextInt();
         s.nextLine();
 
-        while(resposta != 4){
+        while(resposta != 6){
             if(resposta == 1){
                 System.out.println("Insira o código da cidade: ");
                 resposta = s.nextInt();
                 //mostra as cidades vizinhas da cidade
                 // esse vétice vai ser usado como comparador para procurar a equivalente dele no grafo Mapa
-                Vertice<Cidade> comparador = new Vertice<Cidade>(new Cidade());
+                Vertice<Cidade> comparador = new Vertice<Cidade>(new Cidade(resposta));
                 comparador.setValor(mapa.getVertices().get(resposta).getValor());
                 comparador = mapa.obtemVertice(comparador.getValor());
                 if(comparador == null){ 
@@ -98,8 +99,9 @@ public class Main {
             }
             else if(resposta == 2){
                 System.out.println("Insira o código da cidade: ");
-                Vertice<Cidade> comparador = new Vertice<Cidade>(new Cidade());
                 resposta  = s.nextInt();
+                Vertice<Cidade> comparador = new Vertice<Cidade>(new Cidade(resposta));
+                
                 //mostra os destinos possíveis saindo da cidade
                 comparador.setValor(mapa.getVertices().get(resposta).getValor());
                 comparador = mapa.obtemVertice(comparador.getValor());
@@ -116,6 +118,41 @@ public class Main {
             }
             else if(resposta == 3){
                 mapa.ArvoreMinima();
+                System.out.println("O QUE FAZER A SEGUIR?");
+                resposta = s.nextInt();
+            }
+            else if(resposta == 4){
+                System.out.println("Insira o código da cidade de origem: \n");
+                resposta = s.nextInt();
+                int cidOrigem = resposta;
+                
+                
+                System.out.println("Insira o código da cidade de destino: \n");
+                resposta = s.nextInt();
+                int cidDestino = resposta;
+                
+                mapa.CaminhoMininmo(mapa.getVertices().get(cidOrigem - 1), mapa.getVertices().get(cidDestino - 1));
+              
+
+                System.out.println("O QUE FAZER A SEGUIR?");
+                resposta = s.nextInt();
+                
+            }
+            else if( resposta == 5){
+                System.out.println("Insira o código da cidade de origem: \n");
+                resposta = s.nextInt();
+                int cidOrigem = resposta;
+                
+                
+                System.out.println("Insira o código da cidade de destino: \n");
+                resposta = s.nextInt();
+                int cidDestino = resposta;             
+                
+                Grafo<Cidade> arvore = mapa.ArvoreMinima();
+
+                arvore.CaminhoMininmo(arvore.getVertices().get(cidOrigem - 1), arvore.getVertices().get(cidDestino - 1));
+              
+
                 System.out.println("O QUE FAZER A SEGUIR?");
                 resposta = s.nextInt();
             }

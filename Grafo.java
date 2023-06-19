@@ -5,8 +5,12 @@
 
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.Map;
 import java.util.PriorityQueue;
+import java.util.Queue;
 import java.util.Set;
 
 
@@ -196,5 +200,101 @@ public class Grafo<T> {
         return pesoTotal;
     }
 
+    public void CaminhoMininmo(Vertice<T> origem, Vertice<T> destino){
+        
+        // cria uma estrutura que vai armazenar o valor do peso da aresta e o vértice de onde ela sai
+        Map<Vertice<T>, Double> distancias = new HashMap<>();
 
-}   
+        // criação de uma estrutura que vai conter o vértice e seu antecessor
+        Map<Vertice<T>, Vertice<T>> antecessores = new HashMap<>();
+
+        // cria uma estrutura para armazenar os vértices já visitados
+        Set<Vertice<T>> marcados = new HashSet<>();
+
+        // cria uma fila para armazenar os vértices que ainda não foram vistos
+        Queue<Vertice<T>> fila = new LinkedList<>();
+
+        // itera sobre os vértices do grafo analisado
+        for(Vertice<T> vertice : this.vertices){
+            // caso o vértice do grafo tenha o mesmo valor que o vértice de origem passado pelo usuário
+            if(vertice.equals(origem)){
+                //adiciona o vértice no mapa de distâncias, e muda o peso para 0
+                distancias.put(vertice, 0.0);
+            }else{
+                //caso contrário, adiciona o vértice, mas a distância para ele é alterada para infinito
+                distancias.put(vertice, Double.POSITIVE_INFINITY);
+            }
+            //modifica os antecessores para que o antecessor do vértice de origem seja, logicamente, não existente
+            antecessores.put(vertice, null);
+
+        }
+        // por fim, adiciona o vértice de origem à fila
+        fila.add(origem);
+
+        // enquanto a fila não estiver vazia, o vértice atual vai receber o primeiro da fila, que é removido
+        while(!fila.isEmpty()){
+            Vertice<T> atual = fila.poll();
+
+            // caso o vértice atual não tenha sido visitado ainda, o adiciona a lista de marcados
+            if(!marcados.contains(atual)){
+                marcados.add(atual);
+
+                // se o vértice atual for igual ao vértice de destino, termina o processamento do método
+                if(atual.equals(destino)){
+                    break;
+                }
+
+                //itera sobre as arestas de destino do vértice selecionado
+                for(Aresta<T> aresta : atual.getDestinos()){
+                    //o vértice vizinho vai ser o destino da aresta
+                    Vertice<T> vizinho = aresta.getDestino();
+
+                    //a distância entre os vértices vai ser o peso da aresta
+                    double pesoAresta = aresta.getPeso();
+
+                    // a distancia para o atual vai ser a distância armazenada para o vértice atual
+                    double distAtual = distancias.get(atual);
+
+                    // a distância para o vizinho vai ser a distãncia armazenada para ele
+                    double distVizinho = distancias.get(vizinho);
+
+                    // a nova distância vai ser a soma da distância do vértice atual somada ao peso da pròxima aresta
+                    double novaDist = distAtual + pesoAresta;
+
+                    // se a nova distância for menor que a distância para o vizinho, a distancia vai ser atualizada
+                    if(novaDist < distVizinho){
+                        distancias.put(vizinho,novaDist);
+                        antecessores.put(vizinho, atual);
+                        fila.add(vizinho);
+                    }
+                }
+            }
+        }
+        // caso a distância entrre um nó e o destino seja nula, quer dizer que não há caminho entre eles
+        if(antecessores.get(destino) == null){
+            System.out.println("Não há caminho entre os dois");
+        //caso contrário, imprime o caminho mínimo    
+        }else{
+            System.out.println("Caminho mínimo entre "+ origem.getValor() + "\npara " + destino.getValor());
+            printCaminhoMinimo(antecessores, destino);
+            System.out.println();
+            System.out.println("Distancia: " + distancias.get(destino));
+        }
+    }
+
+    //método auxiliar criado para imprimir o caminho mínimo
+    private void printCaminhoMinimo(Map<Vertice<T>, Vertice<T>> antecessores, Vertice<T> destino){
+        if(antecessores.get(destino) != null){
+            printCaminhoMinimo(antecessores, antecessores.get(destino));
+            System.out.print("->");
+        }
+        System.out.print(destino.getValor());
+    }
+
+
+    
+
+}
+
+
+
