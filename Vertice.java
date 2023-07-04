@@ -9,7 +9,7 @@ public class Vertice<T> {
         this.valor = valor;
     }
   
-     public T getValor() {
+    public T getValor() {
         return valor;
     }
 

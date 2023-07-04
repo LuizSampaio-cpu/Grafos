@@ -38,6 +38,7 @@ public class Main {
                    if(Float.parseFloat(data[j]) > 0){
                     Cidade destino = mapa.getVertices().get(j).getValor();
                     mapa.AddAresta(origem, destino, Float.parseFloat(data[j]));
+                    mapa.AddAresta(destino, origem, Float.parseFloat(data[j]));
                    } 
                 }
                 //System.out.println(line);
@@ -63,12 +64,13 @@ public class Main {
         System.out.println("3.CALCULAR ÁRVORE GERADORA MÍNIMA\n");
         System.out.println("4.CALCULAR O CAMINHO MÍNIMO ENTRE DOIS PONTOS\n");
         System.out.println("5.CALCULAR O CAMINHO ENTRE DOIS PONTOS A PARTIR DA ÁRVORE GERADORA MÍNIMA\n");
-        System.out.println("6.SAIR\n");
+        System.out.println("6.CALCULAR O FLUXO MÁXIMO\n");
+        System.out.println("7.SAIR \n");
         
         int resposta = s.nextInt();
         s.nextLine();
 
-        while(resposta != 6){
+        while(resposta != 7){
             if(resposta == 1){
                 System.out.println("Insira o código da cidade: ");
                 resposta = s.nextInt();
@@ -125,13 +127,15 @@ public class Main {
                 System.out.println("Insira o código da cidade de origem: \n");
                 resposta = s.nextInt();
                 int cidOrigem = resposta;
+                Vertice<Cidade> OrigemCidade = new Vertice<Cidade>(mapa.getVertices().get(cidOrigem - 1).getValor());
                 
                 
                 System.out.println("Insira o código da cidade de destino: \n");
                 resposta = s.nextInt();
                 int cidDestino = resposta;
+                Vertice<Cidade> DestinoCidade = new Vertice<Cidade>(mapa.getVertices().get(cidDestino - 1).getValor());
                 
-                mapa.CaminhoMininmo(mapa.getVertices().get(cidOrigem - 1), mapa.getVertices().get(cidDestino - 1));
+                mapa.CaminhoDijkstra(OrigemCidade.getValor(), DestinoCidade.getValor());
               
 
                 System.out.println("O QUE FAZER A SEGUIR?");
@@ -139,19 +143,43 @@ public class Main {
                 
             }
             else if( resposta == 5){
+
+                Grafo<Cidade> arvore = mapa.ArvoreMinima();
+
                 System.out.println("Insira o código da cidade de origem: \n");
                 resposta = s.nextInt();
                 int cidOrigem = resposta;
+                Vertice<Cidade> OrigemCidade = new Vertice<Cidade>(arvore.getVertices().get(cidOrigem - 1).getValor());
                 
                 
                 System.out.println("Insira o código da cidade de destino: \n");
                 resposta = s.nextInt();
-                int cidDestino = resposta;             
+                int cidDestino = resposta;    
+                Vertice<Cidade> DestinoCidade = new Vertice<Cidade>(arvore.getVertices().get(cidDestino - 1).getValor());         
                 
-                Grafo<Cidade> arvore = mapa.ArvoreMinima();
 
-                arvore.CaminhoMininmo(arvore.getVertices().get(cidOrigem - 1), arvore.getVertices().get(cidDestino - 1));
+                arvore.CaminhoDijkstra(OrigemCidade.getValor(), DestinoCidade.getValor());
               
+
+                System.out.println("O QUE FAZER A SEGUIR?");
+                resposta = s.nextInt();
+            }
+            else if(resposta == 6){
+                
+                System.out.println("Insira o código da cidade de origem: \n");
+                resposta = s.nextInt();
+                int cidOrigem = resposta;
+                
+
+                System.out.println("Insira o código da cidade de destino: \n");
+                resposta = s.nextInt();
+                int cidDestino = resposta;
+               // float MaxFlow = mapa.FluxoMaximo(mapa.getVertices().get(cidOrigem), mapa.getVertices().get(cidDestino));
+               // System.out.println("O fluxo máximo entre os dois vértices é: " + MaxFlow);
+                float fluxoMax = mapa.fluxoMaximo( mapa.getVertices().get(cidOrigem), mapa.getVertices().get(cidDestino));
+                
+                System.out.println("O fluxo máximo entre os dois vértices é: " + fluxoMax);
+                
 
                 System.out.println("O QUE FAZER A SEGUIR?");
                 resposta = s.nextInt();
